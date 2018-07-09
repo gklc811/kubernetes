@@ -14,3 +14,4 @@ kubectl delete -f 3demo-sample-php-svc.yaml
 vi 3demo-sample-php-svc.yaml
 kubectl create -f 3demo-sample-php-svc.yaml
 kubectl get svc -n demo-namespace
+kubectl scale --replicas=1 -f 2demo-sample-php.yaml
