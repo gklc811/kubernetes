@@ -1,0 +1,16 @@
+kubectl create -f 1sample-namespace.yaml
+kubectl get namespace
+kubectl create -f 2demo-sample-php.yaml
+kubectl get deployment -n demo-namespace
+kubectl get pods
+kubectl get pods -n demo-namespace
+kubectl get pods
+kubectl get pods -n demo-namespace
+kubectl get svc -n demo-namespace
+kubectl create -f 3demo-sample-php-svc.yaml
+kubectl create -f demo-sample-php-svc.yaml
+kubectl get svc -n demo-namespace
+kubectl delete -f 3demo-sample-php-svc.yaml
+vi 3demo-sample-php-svc.yaml
+kubectl create -f 3demo-sample-php-svc.yaml
+kubectl get svc -n demo-namespace
