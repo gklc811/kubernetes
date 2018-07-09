@@ -1,0 +1,18 @@
+kubectl run pi --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+kubectl get pods
+kubectl attach pi-jrdkj
+kubectl get pods
+kubectl run pi --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(3000)'
+kubectl get pods
+kubectl delete pods
+kubectl delete pods pi-jrdkj
+kubectl run pi --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(3000)'
+kubectl get job
+kubectl get jobs
+kubectl delete jobs pi
+kubectl run pi --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(3000)'
+kubectl delete pods pi-jrdkj
+kubectl get pods
+kubectl attach pi-6rzd5
+kubectl get pods
+kubectl attach pi-6rzd5
