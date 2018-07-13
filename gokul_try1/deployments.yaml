@@ -1,0 +1,23 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: podinfo-deployment
+  namespace: podinfo-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: podinfo
+  template:
+    metadata:
+      labels:
+        environment: dev
+        release: release
+        tier: backend
+        app: podinfo
+    spec:
+      containers:
+      - name: podinfo
+        image: gklc811/podinfo
+        ports:
+        - containerPort: 5000

@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: podinfo
+  name: podinfo-service
+  namespace: podinfo-namespace
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - port: 5000
+    targetPort: 5000
+  selector:
+    app: podinfo 
