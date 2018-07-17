@@ -4,7 +4,7 @@ metadata:
   name: podinfo-deployment
   namespace: podinfo-namespace
 spec:
-  replicas: 3
+  replicas: 6
   selector:
     matchLabels:
       app: podinfo
@@ -21,3 +21,5 @@ spec:
         image: gklc811/podinfo
         ports:
         - containerPort: 5000
+      nodeSelector:
+        tier: backend
