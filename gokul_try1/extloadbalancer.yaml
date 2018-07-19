@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata: 
+  name: podinfo-extloadbalancer
+  namespace: podinfo-namespace
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec: 
+  rules: 
+    - 
+      http: 
+        paths: 
+          - 
+            backend: 
+              serviceName: podinfo-service
+              servicePort: 30262
+            path: /
