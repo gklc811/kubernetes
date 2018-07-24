@@ -4,5 +4,9 @@ var client = new Client({
     host:  '192.168.56.61',
     protocol: 'https',
     version: 'v1beta2',
-    token: ''
+    token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJnb2t1bC10b2tlbi03cGt3OSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJnb2t1bCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImZiOThmZThkLThlNmItMTFlOC04ZTQ0LTA4MDAyNzRmZGM0ZSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTpnb2t1bCJ9.E1yWYn5YtnnDN8zRVANKQzEzf5cXyOnvPTkRsB_-YqwhL_w9xe6Qk57SOgPruZtvacJobbgFbE7QcYqnSL1VUfj6T3a9FVK88fseoH0kTEbtl7RWQJQOpDr0r-vhboKqiiFfOVkgP3ljw0R5xR6d0XhR6IOpTUaimIfvqYUSQjdQQ2EIJIFstnYCkCpCveLaJs6VGMc39Xp7wk3-iGGMK1Ad9Rhr8yeRcuKlwLXvZphumuMc86kNHCqrXrVtYlQevwJ8BqDqSARvcJj53Rb9-Au1DPkBCJwmzgHoI3BZn5IErnUdZawr946pcmMNhOEStewtB2m0gytgn6hCBpn6Sg'
+});
+
+client.pods.get(function (err, pods) {
+    console.log('pods:', pods);
 });
