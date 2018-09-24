@@ -21,7 +21,6 @@ metadata:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
   namespace: kube-system
-
 ---
 # ------------------- Dashboard Role & Role Binding ------------------- #
 
@@ -143,9 +142,10 @@ metadata:
   name: kubernetes-dashboard
   namespace: kube-system
 spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
   ports:
-    - port: 443
+    - port: 8443
       targetPort: 8443
   selector:
     k8s-app: kubernetes-dashboard
-  type: NodePort
