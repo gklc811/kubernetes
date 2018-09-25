@@ -75,7 +75,7 @@ data:
     {
       "Network": "10.244.0.0/16",
       "Backend": {
-        "Type": "vxlan"
+        "Type": "host-gw"
       }
     }
 ---
@@ -87,6 +87,7 @@ metadata:
   labels:
     tier: node
     app: flannel
+    iface: enp0s8
 spec:
   template:
     metadata:
