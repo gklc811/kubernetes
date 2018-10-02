@@ -22,16 +22,16 @@ data:
   input-kubernetes.conf: |
     [INPUT]
         Name              tail
-        Tag               kube.*
+        Tag               *
         Path              /var/log/containers/dpl*.log
         Parser            docker
         Mem_Buf_Limit     5MB
 
   filter-kubernetes.conf: |
     [FILTER]
-        Name                record_modifier
+        Name                kubernetes
         Match               *
-        Record hostname ${HOSTNAME}
+        Kube_URL            https://kubernetes.default.svc.cluster.local:443
 
   output-elasticsearch.conf: |
     [OUTPUT]
