@@ -18,36 +18,51 @@ GET kubecontainerlog/_search
 
 GET kubecontainerlog/_search
 {
-  "query": {
-    "match": {
-      "stream": {
-        "query": "stdout"
-      }
-    }
-  }
+  "query": { "match_all": {} },
+  "from": 10,
+  "size": 20,
+  "sort": { "time": { "order": "desc" } },
+  "_source": ["log"]
 }
 
 GET kubecontainerlog/_search
 {
-  "_source": ["log"],
   "query": {
     "match": {
-      "stream": {
-        "query": "stdout"
-      }
+      "stream": "stdout"
     }
-  }
+  },
+  "from": 10,
+  "size": 20,
+  "sort": {
+    "time": {
+      "order": "desc"
+    }
+  },
+  "_source": [
+    "log",
+    "kubernetes.namespace_name"
+  ]
 }
 
 GET kubecontainerlog/_search
 {
-  "_source": ["log"],
   "query": {
     "match": {
-      "stream": {
-        "query": "stdout"
-      }
+      "stream": "stdout"
     }
-  }
+  },
+  "from": 10,
+  "size": 20,
+  "sort": {
+    "time": {
+      "order": "desc"
+    }
+  },
+  "_source": [
+    "log",
+    "kubernetes.namespace_name"
+  ]
 }
+
 
