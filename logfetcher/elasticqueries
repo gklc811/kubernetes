@@ -1,0 +1,53 @@
+GET kubecontainerlog/_search
+{
+  "query": { "match_all": {} }
+}
+
+GET kubecontainerlog/_search
+{
+  "query": { "match_all": {} },
+  "size": 20
+}
+
+GET kubecontainerlog/_search
+{
+  "query": { "match_all": {} },
+  "from": 10,
+  "size": 20
+}
+
+GET kubecontainerlog/_search
+{
+  "query": {
+    "match": {
+      "stream": {
+        "query": "stdout"
+      }
+    }
+  }
+}
+
+GET kubecontainerlog/_search
+{
+  "_source": ["log"],
+  "query": {
+    "match": {
+      "stream": {
+        "query": "stdout"
+      }
+    }
+  }
+}
+
+GET kubecontainerlog/_search
+{
+  "_source": ["log"],
+  "query": {
+    "match": {
+      "stream": {
+        "query": "stdout"
+      }
+    }
+  }
+}
+
