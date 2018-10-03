@@ -48,8 +48,19 @@ GET kubecontainerlog/_search
 GET kubecontainerlog/_search
 {
   "query": {
-    "match": {
-      "stream": "stdout"
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "stream": "stdout"
+          }
+        },
+        {
+          "match": {
+            "kubernetes.namespace_name": "test1"
+          }
+        }
+      ]
     }
   },
   "from": 10,
@@ -64,5 +75,6 @@ GET kubecontainerlog/_search
     "kubernetes.namespace_name"
   ]
 }
+
 
 
