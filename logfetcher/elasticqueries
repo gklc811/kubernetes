@@ -76,5 +76,12 @@ GET kubecontainerlog/_search
   ]
 }
 
+POST kubecontainerlog/docker/yabOQ2YBxRvL4yTK6817/_update
+{
+"doc" : {
+        "stream" : "new_parsed"
+    },
+    "doc_as_upsert" : true
+}
 
 
