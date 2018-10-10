@@ -1,0 +1,87 @@
+GET kubecontainerlog/_search
+{
+  "query": { "match_all": {} }
+}
+
+GET kubecontainerlog/_search
+{
+  "query": { "match_all": {} },
+  "size": 20
+}
+
+GET kubecontainerlog/_search
+{
+  "query": { "match_all": {} },
+  "from": 10,
+  "size": 20
+}
+
+GET kubecontainerlog/_search
+{
+  "query": { "match_all": {} },
+  "from": 10,
+  "size": 20,
+  "sort": { "time": { "order": "desc" } },
+  "_source": ["log"]
+}
+
+GET kubecontainerlog/_search
+{
+  "query": {
+    "match": {
+      "stream": "stdout"
+    }
+  },
+  "from": 10,
+  "size": 20,
+  "sort": {
+    "time": {
+      "order": "desc"
+    }
+  },
+  "_source": [
+    "log",
+    "kubernetes.namespace_name"
+  ]
+}
+
+GET kubecontainerlog/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "stream": "stdout"
+          }
+        },
+        {
+          "match": {
+            "kubernetes.namespace_name": "test1"
+          }
+        }
+      ]
+    }
+  },
+  "from": 10,
+  "size": 20,
+  "sort": {
+    "time": {
+      "order": "desc"
+    }
+  },
+  "_source": [
+    "log",
+    "kubernetes.namespace_name"
+  ]
+}
+
+POST kubecontainerlog/docker/yabOQ2YBxRvL4yTK6817/_update
+{
+"doc" : {
+        "stream" : "new_parsed"
+    },
+    "doc_as_upsert" : true
+}
+
+

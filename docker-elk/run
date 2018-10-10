@@ -1,0 +1,6 @@
+#!/bin/bash
+
+docker rm -f dockerelk_kibana_1
+docker rm -f dockerelk_elasticsearch_1
+
+docker-compose up --build -d  && docker logs -f dockerelk_elasticsearch_1
