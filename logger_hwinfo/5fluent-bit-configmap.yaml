@@ -21,26 +21,17 @@ data:
 
   input-kubernetes.conf: |
     [INPUT]
-        Name              tail
-        Tag               *
-        Path              /var/log/containers/dpl*.log
-        Parser            docker
-        Mem_Buf_Limit     5MB
-
-  filter-kubernetes.conf: |
-    [FILTER]
-        Name                kubernetes
-        Match               *
-        Kube_URL            https://kubernetes.default.svc.cluster.local:443
+        Name              cpu
+        Tag               my_cpu
 
   output-elasticsearch.conf: |
     [OUTPUT]
         Name            es
         Match           *
-        Host            192.168.56.65
+        Host            192.168.56.61
         Port            9200
-        Index           kubecontainerlog
-        Type            docker
+        Index           hwinfo
+
 
   parsers.conf: |
     [PARSER]
