@@ -22,7 +22,13 @@ data:
   input-kubernetes.conf: |
     [INPUT]
         Name              cpu
-        Tag               my_cpu
+        Tag               *
+
+  filter-kubernetes.conf: |
+    [FILTER]
+        Name                kubernetes
+        Match               *
+        Kube_URL            https://kubernetes.default.svc.cluster.local:443
 
   output-elasticsearch.conf: |
     [OUTPUT]
@@ -30,8 +36,8 @@ data:
         Match           *
         Host            192.168.56.61
         Port            9200
-        Index           hwinfo
-
+        Index           kubecontainerlog
+        Type            docker
 
   parsers.conf: |
     [PARSER]
