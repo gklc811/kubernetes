@@ -21,11 +21,39 @@ data:
 
   input-kubernetes.conf: |
     [INPUT]
+        Name              cpu
+        Tag               cpu
+        Interval_Sec      10
+
+    [INPUT]
+        Name              disk
+        Tag               disk
+        Interval_Sec      10
+
+    [INPUT]
+        Name              mem
+        Tag               mem
+        Interval_Sec      10
+
+    [INPUT]
+        Name              kmsg
+        Tag               kmsg
+        Interval_Sec      10
+
+    [INPUT]
+        Name              netif
+        Tag               netif
+        Interval_Sec      10
+        Interval_NSec     0
+        Interface         enp0s8
+
+    [INPUT]
         Name              tail
-        Tag               *
+        Tag               containerlog
         Path              /var/log/containers/dpl*.log
         Parser            docker
         Mem_Buf_Limit     5MB
+
 
   filter-kubernetes.conf: |
     [FILTER]
@@ -36,7 +64,47 @@ data:
   output-elasticsearch.conf: |
     [OUTPUT]
         Name            es
-        Match           *
+        Match           cpu
+        Host            192.168.56.61
+        Port            9200
+        Index           cpulog
+        Type            docker
+
+    [OUTPUT]
+        Name            es
+        Match           disk
+        Host            192.168.56.61
+        Port            9200
+        Index           disklog
+        Type            docker
+
+    [OUTPUT]
+        Name            es
+        Match           mem
+        Host            192.168.56.61
+        Port            9200
+        Index           memlog
+        Type            docker
+
+    [OUTPUT]
+        Name            es
+        Match           kmsg
+        Host            192.168.56.61
+        Port            9200
+        Index           kmsglog
+        Type            docker
+
+    [OUTPUT]
+        Name            es
+        Match           netif
+        Host            192.168.56.61
+        Port            9200
+        Index           netiflog
+        Type            docker
+
+    [OUTPUT]
+        Name            es
+        Match           containerlog
         Host            192.168.56.61
         Port            9200
         Index           kubecontainerlog
