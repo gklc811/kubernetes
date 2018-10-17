@@ -3,6 +3,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: cassandra-data-1
+  namespace: cassandra
   labels:
     type: local
     app: cassandra
@@ -19,6 +20,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: cassandra-data-2
+  namespace: cassandra
   labels:
     type: local
     app: cassandra
@@ -35,6 +37,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: cassandra-data-3
+  namespace: cassandra
   labels:
     type: local
     app: cassandra
@@ -51,6 +54,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: cassandra-data-4
+  namespace: cassandra
   labels:
     type: local
     app: cassandra
@@ -67,6 +71,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: cassandra-data-5
+  namespace: cassandra
   labels:
     type: local
     app: cassandra
@@ -83,6 +88,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: cassandra-data-6
+  namespace: cassandra
   labels:
     type: local
     app: cassandra
@@ -99,6 +105,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: cassandra-data-7
+  namespace: cassandra
   labels:
     type: local
     app: cassandra
@@ -115,6 +122,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: cassandra-data-8
+  namespace: cassandra
   labels:
     type: local
     app: cassandra
@@ -131,6 +139,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: cassandra-data-9
+  namespace: cassandra
   labels:
     type: local
     app: cassandra

@@ -5,6 +5,7 @@ metadata:
   labels:
     app: cassandra
   name: cassandra
+  namespace: cassandra
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
