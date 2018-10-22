@@ -14,7 +14,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-1
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -31,7 +31,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-2
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -48,7 +48,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-3
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -65,7 +65,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-4
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -82,7 +82,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-5
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -99,7 +99,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-6
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -116,7 +116,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-7
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -133,7 +133,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-8
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -150,4 +150,4 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-9
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
