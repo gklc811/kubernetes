@@ -1,4 +1,3 @@
-# A headless service to create DNS records.
 apiVersion: v1
 kind: Service
 metadata:
@@ -28,7 +27,7 @@ spec:
       terminationGracePeriodSeconds: 0
       containers:
         - name: hdfs-namenode
-          image: uhopper/hadoop-namenode:2.7.2
+          image: registry.gokul.com:5000/gokul/hdfs-namenode
           env:
             - name: CLUSTER_NAME
               value: hdfs-k8s
