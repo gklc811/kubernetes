@@ -36,7 +36,8 @@ spec:
             - 
               name: CASSANDRA_ENDPOINT_SNITCH
               value: GossipingPropertyFileSnitch
-          image: "cassandra:3"
+          image: "registry.gokul.com:5000/gokul/cassandra"
+          command: ["docker-entrypoint.sh"]
           imagePullPolicy: IfNotPresent
           lifecycle: 
             postStart: 
