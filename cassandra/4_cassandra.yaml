@@ -39,19 +39,6 @@ spec:
           image: "registry.gokul.com:5000/gokul/cassandra"
           command: ["docker-entrypoint.sh"]
           imagePullPolicy: IfNotPresent
-          lifecycle: 
-            postStart: 
-              exec: 
-                command: 
-                  - /bin/sh
-                  - "-c"
-                  - "rm -rf /var/lib/cassandra/data/*"
-            preStop: 
-              exec: 
-                command: 
-                  - /bin/sh
-                  - "-c"
-                  - "/usr/bin/nodetool decommission && rm -rf /var/lib/cassandra/data/*"
           name: cassandra
           ports: 
             - 
@@ -66,20 +53,4 @@ spec:
             - 
               containerPort: 9042
               name: cql
-          volumeMounts: 
-            - 
-              mountPath: /var/lib/cassandra/data
-              name: cassandra-data
       terminationGracePeriodSeconds: 900
-  volumeClaimTemplates: 
-    - 
-      metadata: 
-        annotations: 
-          volume.beta.kubernetes.io/storage-class: ""
-        name: cassandra-data
-      spec: 
-        accessModes: 
-          - ReadWriteOnce
-        resources: 
-          requests: 
-            storage: 5Gi
