@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hdfs-datanode
+  labels:
+    app: hdfs-datanode
+  namespace: hdfs
+spec:
+  ports:
+  - port: 50010
+    name: fs
+  clusterIP: None
+  selector:
+    app: hdfs-datanode

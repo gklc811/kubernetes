@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: hdfs
+  labels:
+    app: hdfs
