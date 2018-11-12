@@ -7,9 +7,14 @@ metadata:
   name: hdfs-namenode
   namespace: hdfs
 spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
   ports:
   - port: 8020
+    targetPort: 8020
     name: fs
-  clusterIP: None
+  - port: 50070
+    targetPort: 50070
+    name: ui
   selector:
     app: hdfs-namenode

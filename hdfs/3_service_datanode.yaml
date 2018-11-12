@@ -7,9 +7,11 @@ metadata:
     app: hdfs-datanode
   namespace: hdfs
 spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
   ports:
   - port: 50010
+    targetPort: 50010
     name: fs
-  clusterIP: None
   selector:
     app: hdfs-datanode
