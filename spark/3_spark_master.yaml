@@ -1,0 +1,32 @@
+--- 
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata: 
+  name: sparkmaster
+  namespace: spark
+spec: 
+  replicas: 1
+  serviceName: sparkmaster
+  template: 
+    metadata: 
+      labels: 
+        app: sparkmaster
+    spec: 
+      containers: 
+        - 
+          env:
+            - 
+              name: SPARK_NO_DAEMONIZE
+              value: any
+          image: "registry.gokul.com:5000/gokul/spark"
+          command: ["/opt/spark/sbin/start-master.sh"]
+          imagePullPolicy: IfNotPresent
+          name: spark
+          ports: 
+            - 
+              containerPort: 7077
+              name: job
+            - 
+              containerPort: 8080
+              name: ui
+      terminationGracePeriodSeconds: 30

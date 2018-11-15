@@ -1,0 +1,26 @@
+--- 
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata: 
+  name: sparkworker
+  namespace: spark
+spec: 
+  replicas: 3
+  serviceName: sparkmaster
+  template: 
+    metadata: 
+      labels: 
+        app: sparkworker
+    spec: 
+      containers: 
+        - 
+          env:
+            - 
+              name: SPARK_NO_DAEMONIZE
+              value: any
+          image: "registry.gokul.com:5000/gokul/spark"
+          command: ["/opt/spark/sbin/start-slave.sh"]
+          args: ["spark://sparkmaster-0.sparkmaster.spark.svc.cluster.local:7077"]
+          imagePullPolicy: IfNotPresent
+          name: spark
+      terminationGracePeriodSeconds: 30
