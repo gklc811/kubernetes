@@ -105,7 +105,7 @@ spec:
       serviceAccountName: flannel
       initContainers:
       - name: install-cni
-        image: quay.io/coreos/flannel:v0.10.0-amd64
+        image: registry.gokul.com:5000/gokul/flannel
         command:
         - cp
         args:
@@ -119,7 +119,7 @@ spec:
           mountPath: /etc/kube-flannel/
       containers:
       - name: kube-flannel
-        image: quay.io/coreos/flannel:v0.10.0-amd64
+        image: registry.gokul.com:5000/gokul/flannel
         command:
         - /opt/bin/flanneld
         args:
@@ -185,7 +185,7 @@ spec:
       serviceAccountName: flannel
       initContainers:
       - name: install-cni
-        image: quay.io/coreos/flannel:v0.10.0-arm64
+        image: registry.gokul.com:5000/gokul/flannel
         command:
         - cp
         args:
@@ -199,7 +199,7 @@ spec:
           mountPath: /etc/kube-flannel/
       containers:
       - name: kube-flannel
-        image: quay.io/coreos/flannel:v0.10.0-arm64
+        image: registry.gokul.com:5000/gokul/flannel
         command:
         - /opt/bin/flanneld
         args:
@@ -264,7 +264,7 @@ spec:
       serviceAccountName: flannel
       initContainers:
       - name: install-cni
-        image: quay.io/coreos/flannel:v0.10.0-arm
+        image: registry.gokul.com:5000/gokul/flannel
         command:
         - cp
         args:
@@ -278,7 +278,7 @@ spec:
           mountPath: /etc/kube-flannel/
       containers:
       - name: kube-flannel
-        image: quay.io/coreos/flannel:v0.10.0-arm
+        image: registry.gokul.com:5000/gokul/flannel
         command:
         - /opt/bin/flanneld
         args:
@@ -343,7 +343,7 @@ spec:
       serviceAccountName: flannel
       initContainers:
       - name: install-cni
-        image: quay.io/coreos/flannel:v0.10.0-ppc64le
+        image: registry.gokul.com:5000/gokul/flannel
         command:
         - cp
         args:
@@ -357,7 +357,7 @@ spec:
           mountPath: /etc/kube-flannel/
       containers:
       - name: kube-flannel
-        image: quay.io/coreos/flannel:v0.10.0-ppc64le
+        image: registry.gokul.com:5000/gokul/flannel
         command:
         - /opt/bin/flanneld
         args:
@@ -422,7 +422,7 @@ spec:
       serviceAccountName: flannel
       initContainers:
       - name: install-cni
-        image: quay.io/coreos/flannel:v0.10.0-s390x
+        image: registry.gokul.com:5000/gokul/flannel
         command:
         - cp
         args:
@@ -436,7 +436,7 @@ spec:
           mountPath: /etc/kube-flannel/
       containers:
       - name: kube-flannel
-        image: quay.io/coreos/flannel:v0.10.0-s390x
+        image: registry.gokul.com:5000/gokul/flannel
         command:
         - /opt/bin/flanneld
         args:
