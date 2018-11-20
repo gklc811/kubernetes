@@ -1,0 +1,10 @@
+for i in `ls`
+do
+echo $i
+docker build $i/
+docker run -d `docker images -q | head -n1`
+docker commit `docker ps -q | head -n1` gklc811/$i
+docker push gklc811/$i
+docker rm -f $(docker ps -a -q)
+docker rmi $(docker images)
+done

@@ -1,0 +1,19 @@
+//Start services
+
+    for i in `ls`
+    do
+    cd $i
+    echo "Starting services in " $i
+    for j in `ls`
+    do
+    kubectl create -f $j
+    done
+    cd ../
+    done
+
+//Stop services
+
+for i in `ls`
+do
+kubectl delete -f $i/namespace.yml
+done

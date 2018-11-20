@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: test2
+  name: svc-test2
+  namespace: test2
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - port: 5000
+    targetPort: 5000
+  selector:
+    app: test2
