@@ -1,0 +1,7 @@
+[masters]
+master ansible_host=k1.gokul.com ansible_user=root
+
+[workers]
+worker1 ansible_host=k2.gokul.com ansible_user=root
+worker2 ansible_host=k3.gokul.com ansible_user=root
+worker3 ansible_host=k4.gokul.com ansible_user=root
