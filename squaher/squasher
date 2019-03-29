@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Constant Declaration
+registry_ip="registry.gokul.com:5000"
+
+# Squash Images
+function squash_images() {
+        for i in `curl -u gokul:AlineCon-12# $registry_ip/v2/_catalog | jq .repositories | jq .[]`
+        do
+                image=`echo $i | tr '"' '\0'`
+                instance=`echo $image | cut -d '/' -f2`
+                echo $image
+                echo $instance
+                docker run --name $instance -d $registry_ip/$image
+				container_id=`docker images $registry_ip/$image -q`
+                echo "Saving : " $instance
+                docker save $container_id -o $instance
+                image_name_squash=`echo $instance".squash"`
+                docker-squash -verbose -from root -i $instance -o $image_name_squash -t gokul/$instance
+                tar --delete -f $image_name_squash manifest.json
+                cat $image_name_squash | docker load
+                docker rm -f $instance
+                docker rmi $container_id
+                rm $instance
+                rm $image_name_squash
+                docker run --name $instance -d $image /bin/bash
+                docker commit -a="gokul" -m="Squashed commit" $instance $registry_ip/$image
+                docker push $registry_ip/$image
+        done
+}
+
+# Download Images
+function download_images() {
+        for i in `curl -u gokul:AlineCon-12# $registry_ip/v2/_catalog | jq .repositories | jq .[]`
+        do
+                image=`echo $i | tr '"' '\0'`
+                instance=`echo $image | cut -d '/' -f2`
+                echo $image
+                echo $instance
+                docker run --name $instance -d $registry_ip/$image
+                docker rm -f $(docker ps -a -q)
+        done
+}
+
+#upload images
+function upload_images () {
+        for i in `docker images --format "{{.Repository}}"`
+        do
+                image_name=$i
+                instance_name=`echo $image_name | cut -d '/' -f3`
+                echo $image_name
+                echo $instance_name
+                docker run --name $instance_name -d $image_name /bin/bash
+                docker commit -a="gokul" -m="Squashed commit" $instance_name $image_name
+                docker push $image_name
+                docker rm -f $(docker ps -a -q)
+        done
+}
+
+# Main Execution
+mkdir /vagrant/work
+cd /vagrant/work
+squash_images
+download_images
+read -p "Confirm if you have deleted the contents in registry server (y/n): " yn
+upload_images
+cd ..
+rm -rf /vagrant/work
+docker rmi $(docker images)
+
