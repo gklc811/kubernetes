@@ -4,7 +4,7 @@
    - name: install Docker
      yum:
        name: docker
-       state: present
+       state: latest
        update_cache: true
 
    - name: start Docker
@@ -12,9 +12,6 @@
        name: docker
        state: started
        enabled: yes
-
-   - name: disable SELinux
-     command: setenforce 0
 
    - name: disable SELinux on reboot
      selinux:
@@ -32,24 +29,27 @@
       value: 1
       state: present
 
-   - name: add Kubernetes' YUM repository
+   - name: Kubernetes
      yum_repository:
       name: Kubernetes
-      description: Kubernetes YUM repository
+      description: Kubernetes
       baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
       gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
       gpgcheck: yes
+      enabled: yes
+      repo_gpgcheck: yes
+      exclude : kube*
 
    - name: install kubelet
      yum:
-        name: kubelet-1.10.12
-        state: present
+        name: kubelet
+        state: latest
         update_cache: true
 
    - name: install kubeadm
      yum:
-        name: kubeadm-1.10.12
-        state: present
+        name: kubeadm
+        state: latest
 
    - name: start kubelet
      service:
@@ -62,6 +62,6 @@
   tasks:
    - name: install kubectl
      yum:
-        name: kubectl-1.10.12
-        state: present
+        name: kubectl
+        state: latest
         allow_downgrade: yes
