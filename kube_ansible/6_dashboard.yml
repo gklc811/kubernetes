@@ -4,7 +4,4 @@
     - name: install Dashboard
       become: yes
       become_user: gokul
-      shell: kubectl create -f https://raw.githubusercontent.com/gklc811/kubernetes/master/UI_Dashboard/kubernetes-dashboard.yaml >> pod_network_setup.txt
-      args:
-        chdir: $HOME
-        creates: pod_network_setup.txt
+      shell: kubectl create -f https://raw.githubusercontent.com/gklc811/kubernetes/master/UI_Dashboard/kubernetes-dashboard.yaml 
