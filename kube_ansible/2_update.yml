@@ -1,7 +1,7 @@
 - hosts: all
   gather_facts: no
   tasks:
-  - name: upgrade all packages
+  - name: install epel release
     yum: 
      name=epel-release 
      state=latest
