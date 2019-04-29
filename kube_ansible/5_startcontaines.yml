@@ -17,5 +17,8 @@
       status_code: 200
       timeout: 600
 
+   - copy:
+        src: /root/.kube/config
+        dest: /home/alineuser/share/docker/mount_dir/elastic_env/config
    - name: env-management
      shell: docker run -p 9000:80 -v /home/alineuser/share/docker/mount_dir/elastic_env:/elastic_env:rw --name=Env-Mgmt -d registry.gokul.com:5000/gokul/env-management /bin/bash init 
