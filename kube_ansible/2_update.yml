@@ -3,21 +3,49 @@
   tasks:
   - name: upgrade all packages
     yum: 
+     name=epel-release 
+     state=latest
+  - name: upgrade all packages
+    yum: 
      name='*' 
      state=latest
   - name: disable SELinux
     command: setenforce 0
-  - name: check for reboot hint
-    shell: if [ $(rpm -q --last kernel | awk 'NR==1 {print $1}') != kernel-$(uname -r) ]; then echo 'reboot'; else echo 'Kernel is current'; fi
-    ignore_errors: true
-    register: reboot_hint
-  - name: Rebooting ...
-    command: shutdown -r now "Reboot required for updated kernel"
-    async: 0
-    poll: 0
-    ignore_errors: true
-    changed_when: "reboot_hint.stdout == 'reboot'"
-    register: rebooting
-  - name: Wait for computer to reboot...
-    pause: seconds=60
-    when: rebooting|changed
+  - name: disable SELinux on reboot
+    selinux:
+       state: disabled
+
+- hosts: workers
+  become: yes
+  tasks:
+  tasks:
+   - name: br_netfilter
+     shell: modprobe br_netfilter
+
+   - name: ensure net.bridge.bridge-nf-call-ip6tables is set to 1
+     sysctl:
+      name: net.bridge.bridge-nf-call-ip6tables
+      value: 1
+      state: present
+
+   - name: ensure net.bridge.bridge-nf-call-iptables is set to 1
+     sysctl:
+      name: net.bridge.bridge-nf-call-iptables
+      value: 1
+      state: present
+
+- hosts: workers
+  gather_facts: no
+  tasks:
+   - name: rebooting slaves
+     reboot:
+
+- hosts: masters
+  gather_facts: no
+  tasks:
+   - name: rebooting master
+     reboot:
+
+
+
+

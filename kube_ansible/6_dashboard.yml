@@ -1,7 +1,0 @@
-- hosts: master
-  become: yes
-  tasks:
-    - name: install Dashboard
-      become: yes
-      become_user: gokul
-      shell: kubectl create -f https://raw.githubusercontent.com/gklc811/kubernetes/master/UI_Dashboard/kubernetes-dashboard.yaml 
