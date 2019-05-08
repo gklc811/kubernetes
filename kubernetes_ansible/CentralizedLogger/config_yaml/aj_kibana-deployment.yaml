@@ -1,0 +1,31 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: kibana
+  namespace: logger
+  labels:
+    app: kibana
+spec:
+  replicas: 1
+  serviceName: svc-kibana
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: docker.elastic.co/kibana/kibana:6.6.2
+        imagePullPolicy: Always
+        env:
+        - name: "ELASTICSEARCH_URL"
+          value: "http://elastic-0.elastic.logger.svc.cluster.local:9200"
+        - name: CLUSTER_NAME
+          value: elasticsearch
+        ports:
+        - name: http
+          containerPort: 5601
+

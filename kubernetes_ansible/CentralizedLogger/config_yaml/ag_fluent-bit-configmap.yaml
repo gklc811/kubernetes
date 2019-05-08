@@ -1,0 +1,225 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluent-bit-config
+  namespace: logger
+  labels:
+    k8s-app: fluent-bit
+data:
+  # Configuration files: server, input, filters and output
+  # ======================================================
+  fluent-bit.conf: |
+    [SERVICE]
+        Flush         1
+        Log_Level     info
+        Daemon        off
+        Parsers_File  parsers.conf
+
+    @INCLUDE input-kubernetes.conf
+    @INCLUDE filter-kubernetes.conf
+    @INCLUDE output-elasticsearch.conf
+
+  input-kubernetes.conf: |
+    [INPUT]
+        Name              cpu
+        Tag               cpu
+        Interval_Sec      10
+
+    [INPUT]
+        Name              disk
+        Tag               disk
+        Interval_Sec      10
+
+    [INPUT]
+        Name              mem
+        Tag               mem
+        Interval_Sec      10
+
+    [INPUT]
+        Name              kmsg
+        Tag               kmsg
+        Interval_Sec      10
+
+    [INPUT]
+        Name              netif
+        Tag               netif
+        Interval_Sec      10
+        Interval_NSec     0
+        Interface         enp0s8
+
+    [INPUT]
+        Name              tail
+        Tag               kube.*
+        Path              /var/log/containers/dpl*.log
+        Parser            docker
+        Mem_Buf_Limit     50MB
+        Buffer_Chunk_Size 32k
+        Buffer_Max_Size   5MB
+
+    [INPUT]
+        Name              tail
+        Tag               kube.*
+        Path              /var/log/containers/sfst-cassandra*.log
+        Parser            docker
+        Mem_Buf_Limit     5MB
+    
+    [INPUT]
+        Name              tail
+        Tag               kube.*
+        Path              /var/log/containers/sfst-spark*.log
+        Parser            docker
+        Mem_Buf_Limit     5MB
+
+    [INPUT]
+        Name              tail
+        Tag               kube.*
+        Path              /var/log/containers/sfst-ignite*.log
+        Parser            docker
+        Mem_Buf_Limit     5MB
+
+    [INPUT]
+        Name              tail
+        Tag               kube.*
+        Path              /var/log/containers/sfst-hdfs*.log
+        Parser            docker
+        Mem_Buf_Limit     5MB
+
+
+  filter-kubernetes.conf: |
+    [FILTER]
+        Name                kubernetes
+        Match               *
+        Kube_URL            https://kubernetes.default.svc.cluster.local:443
+
+    [FILTER]
+        Name                record_modifier
+        Match               *
+        Record              hostname ${HOSTNAME}
+        Record              nodename ${MY_NODE_NAME}
+
+  output-elasticsearch.conf: |
+    [OUTPUT]
+        Name            es
+        Match           cpu
+        Host            elastic-0.elastic.logger.svc.cluster.local
+        Port            9200
+        Index           cpu_info
+
+    [OUTPUT]
+        Name            es
+        Match           disk
+        Host            elastic-0.elastic.logger.svc.cluster.local
+        Port            9200
+        Index           disk_info
+
+    [OUTPUT]
+        Name            es
+        Match           mem
+        Host            elastic-0.elastic.logger.svc.cluster.local
+        Port            9200
+        Index           mem_info
+
+    [OUTPUT]
+        Name            es
+        Match           kmsg
+        Host            elastic-0.elastic.logger.svc.cluster.local
+        Port            9200
+        Index           kmsg_info
+
+    [OUTPUT]
+        Name            es
+        Match           netif
+        Host            elastic-0.elastic.logger.svc.cluster.local
+        Port            9200
+        Index           netif_info
+
+    [OUTPUT]
+        Name            es
+        Match           kube.var.log.containers.dpl*.log
+        Host            elastic-0.elastic.logger.svc.cluster.local
+        Port            9200
+        Index           microservice_log
+        Type            docker
+
+    [OUTPUT]
+        Name            es
+        Match           kube.var.log.containers.sfst-cassandra*.log
+        Host            elastic-0.elastic.logger.svc.cluster.local
+        Port            9200
+        Index           cassandra_log
+        Type            docker
+    
+    [OUTPUT]
+        Name            es
+        Match           kube.var.log.containers.sfst-spark*.log
+        Host            elastic-0.elastic.logger.svc.cluster.local
+        Port            9200
+        Index           spark_log
+        Type            docker
+
+    [OUTPUT]
+        Name            es
+        Match           kube.var.log.containers.sfst-ignite*.log
+        Host            elastic-0.elastic.logger.svc.cluster.local
+        Port            9200
+        Index           ignite_log
+        Type            docker
+
+    [OUTPUT]
+        Name            es
+        Match           kube.var.log.containers.sfst-hdfs*.log
+        Host            elastic-0.elastic.logger.svc.cluster.local
+        Port            9200
+        Index           hdfs_log
+        Type            docker
+
+
+  parsers.conf: |
+    [PARSER]
+        Name   apache
+        Format regex
+        Regex  ^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$
+        Time_Key time
+        Time_Format %d/%b/%Y:%H:%M:%S %z
+
+    [PARSER]
+        Name   apache2
+        Format regex
+        Regex  ^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^ ]*) +\S*)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$
+        Time_Key time
+        Time_Format %d/%b/%Y:%H:%M:%S %z
+
+    [PARSER]
+        Name   apache_error
+        Format regex
+        Regex  ^\[[^ ]* (?<time>[^\]]*)\] \[(?<level>[^\]]*)\](?: \[pid (?<pid>[^\]]*)\])?( \[client (?<client>[^\]]*)\])? (?<message>.*)$
+
+    [PARSER]
+        Name   nginx
+        Format regex
+        Regex ^(?<remote>[^ ]*) (?<host>[^ ]*) (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$
+        Time_Key time
+        Time_Format %d/%b/%Y:%H:%M:%S %z
+
+    [PARSER]
+        Name   json
+        Format json
+        Time_Key time
+        Time_Format %d/%b/%Y:%H:%M:%S %z
+
+    [PARSER]
+        Name        docker
+        Format      json
+        Time_Key    time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L
+        Time_Keep   On
+        # Command      |  Decoder | Field | Optional Action
+        # =============|==================|=================
+        Decode_Field_As   escaped    log
+
+    [PARSER]
+        Name        syslog
+        Format      regex
+        Regex       ^\<(?<pri>[0-9]+)\>(?<time>[^ ]* {1,2}[^ ]* [^ ]*) (?<host>[^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$
+        Time_Key    time
+        Time_Format %b %d %H:%M:%S

@@ -1,0 +1,33 @@
+- hosts: master
+  become: yes
+  tasks:
+   - name : hoster
+     shell: docker rm -f hoster; docker run  -v /home/alineuser/share/docker/mount_dir/builds:/var/www/html/hoster:rw -p 8080:50010 --name=hoster -d registryname:5000/gokul/hoster bash init
+ 
+   - name: updatemanager
+     shell: docker rm -f updatemanager; docker run -p 8800:5000 -v /home/alineuser/share/docker/mount_dir/machine:/machine -v /home/alineuser/share/docker/mount_dir/builds:/builds --name=updatemanager -d registryname:5000/gokul/updatemanager bash init
+
+   - name: build request
+     uri:
+      method: POST
+      url: "http://localhost:8800/api/update"
+      body: "{\"update\":[\"env_mgmt\"],\"directory\":\"envmgmt\"}"
+      body_format: json
+      return_content: yes
+      status_code: 200
+      timeout: 600
+
+   - copy:
+        src: /root/.kube/config
+        dest: /home/alineuser/share/docker/mount_dir/elastic_env/config
+   - name: env-management
+     shell: docker rm -f Env-Mgmt;docker run -p 9000:80 -v /home/alineuser/share/docker/mount_dir/elastic_env:/elastic_env:rw --name=Env-Mgmt -d registryname:5000/gokul/env-management /bin/bash init 
+
+     
+   - name: start logger
+     shell: kubectl create -f {{playbook_dir}}/CentralizedLogger/config_yaml/
+     
+    
+    
+    
+    

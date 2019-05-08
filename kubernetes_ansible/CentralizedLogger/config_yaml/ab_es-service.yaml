@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: elastic
+  name: elastic
+  namespace: logger
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - port: 9200
+    targetPort: 9200
+  selector:
+    app: elastic

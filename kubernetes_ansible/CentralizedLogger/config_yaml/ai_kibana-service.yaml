@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: kibana
+  name: svc-kibana
+  namespace: logger
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - name: http
+    port: 5601
+    targetPort: 5601
+  selector:
+    app: kibana
+

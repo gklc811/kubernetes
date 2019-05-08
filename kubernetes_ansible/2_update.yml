@@ -1,0 +1,75 @@
+- hosts: all
+  gather_facts: no
+  tasks:
+  - name: upgrade all packages
+    yum: 
+     name=epel-release 
+     state=latest
+  - name: upgrade all packages
+    yum: 
+     name='*' 
+     state=latest
+  - name: disable SELinux
+    command: setenforce 0
+  - name: disable SELinux on reboot
+    selinux:
+       state: disabled       
+  - name: disable firewall
+    command: systemctl disable firewalld
+    
+  - name: Insert a line to journald.conf the end of a file.
+    lineinfile:
+       path: /etc/systemd/journald.conf
+       line: "RateLimitInterval=0"
+  - name: Insert a line to journald.conf the end of a file.
+    lineinfile:
+       path: /etc/systemd/journald.conf
+       line: "RateLimitBurst=0"
+       
+  - name: insert vm.max_map_count.
+    lineinfile:
+       path: /etc/sysctl.conf
+       line: "vm.max_map_count=262144"
+       
+  - name: disable firewall
+    command: systemctl restart systemd-journald
+        
+  - name: install jq
+    yum:
+       name: jq
+       state: latest
+
+- hosts: workers
+  become: yes
+  tasks:
+  tasks:
+   - name: br_netfilter
+     shell: modprobe br_netfilter
+
+   - name: ensure net.bridge.bridge-nf-call-ip6tables is set to 1
+     sysctl:
+      name: net.bridge.bridge-nf-call-ip6tables
+      value: 1
+      state: present
+
+   - name: ensure net.bridge.bridge-nf-call-iptables is set to 1
+     sysctl:
+      name: net.bridge.bridge-nf-call-iptables
+      value: 1
+      state: present
+
+- hosts: workers
+  gather_facts: no
+  tasks:
+   - name: rebooting slaves
+     reboot:
+
+- hosts: masters
+  gather_facts: no
+  tasks:
+   - name: rebooting master
+     reboot:
+
+
+
+

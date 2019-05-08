@@ -1,0 +1,25 @@
+kind: StatefulSet
+apiVersion: apps/v1beta1
+metadata:
+  name: elastic
+  namespace: logger
+spec:
+  replicas: 1
+  serviceName: elastic
+  selector:
+    matchLabels:
+      app: elastic
+  template:
+    metadata:
+      labels:
+        app: elastic
+    spec:
+      containers:
+      - name: elastic
+        image: docker.elastic.co/elasticsearch/elasticsearch:6.6.2
+        env:
+        - name: ES_JAVA_OPTS
+          value: "-Xmx256m -Xms256m"
+        ports:
+        - containerPort: 9200
+ 

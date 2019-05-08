@@ -1,0 +1,17 @@
+- hosts: master
+  become: yes
+  tasks:
+   - name: start dashboard
+     shell: kubectl create -f {{playbook_dir}}/dashboard/
+   - name: 
+     shell: kubectl create serviceaccount k8sadmin -n kube-system  
+   - name: start dashboard
+     shell: kubectl create clusterrolebinding k8sadmin --clusterrole=cluster-admin --serviceaccount=kube-system:k8sadmin
+     
+     
+   - name: get dashboard
+     shell: echo -e "https://\c"; kubectl get pods -l k8s-app=kubernetes-dashboard -n kube-system -o json | jq -r '.items[0].status.hostIP'| tr '\n' ':'; kubectl get svc -l k8s-app=kubernetes-dashboard -n kube-system -o json | jq -r '.items[0].spec.ports[0].nodePort' && kubectl create serviceaccount k8sadmin -n kube-system ;kubectl create clusterrolebinding k8sadmin --clusterrole=cluster-admin --serviceaccount=kube-system:k8sadmin ;kubectl -n kube-system describe secret $(kubectl get secret -n kube-system | grep k8sadmin | cut -d " " -f1 ) | grep "token:"
+     register: dashboard
+     
+   - debug:
+      msg : "dashboard details : {{ dashboard.stdout }}"
