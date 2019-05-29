@@ -1,0 +1,101 @@
+#!/bin/bash
+
+usage() { 
+echo "Usage: $0 [-p <password>]" 1>&2; 
+exit 1; 
+}
+
+while getopts ":p:k:" o; do
+        case "${o}" in
+                p)
+                        p=${OPTARG}
+                        ;;
+		k)
+                        k=${OPTARG}
+                        ;;
+                h)
+                        usage
+                        ;;
+                *)
+                        usage
+                        ;;
+        esac
+done
+
+progress=`cat ./progress`
+if [ $progress == 0 ]
+then
+yum -y install epel-release
+yum -y update
+yum -y install ansible sshpass
+mkdir -p /home/alineuser/share/docker/mount_dir/builds/
+mkdir -p /home/alineuser/share/docker/mount_dir/elastic_env/
+
+echo y | sudo ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N ""
+sudo cp -fn /root/.ssh/id_rsa /home/alineuser/share/docker/mount_dir/elastic_env/id_rsa
+
+
+
+if [ "$p" ]
+then
+for i in `cat hosts | grep ansible_host | cut -d '=' -f2 | cut -d ' ' -f1`
+do
+	sshpass -p $p ssh-copy-id -o StrictHostKeyChecking=no root@$i
+done
+elif [ "$k" ]
+then
+for i in `cat hosts | grep ansible_host | cut -d '=' -f2 | cut -d ' ' -f1`
+do
+	chmod 400 $k
+	scp -i $k -o StrictHostKeyChecking=no /root/.ssh/id_rsa.pub root@$i:/root/.ssh/authorized_keys
+done
+else
+	echo "Password not given to enable passwordless ssh to the nodes"
+	usage
+fi
+
+
+echo 1 > progress
+ansible-playbook -i ./hosts ./2_update.yml
+fi
+
+if [ $progress == 1 ]
+then
+    i=`cat hosts | grep ansible_host | grep master | cut -d '=' -f2 | cut -d ' ' -f1`
+    sed -i "s/localhost/$i/g" /home/alineuser/share/docker/mount_dir/elastic_env/env.txt
+    sed -i "s/localhost/$i/g" ./3_depend.yml
+    sed -i "s/localhost/$i/g" ./6.1_addnode.yml
+
+               
+
+
+
+#echo -n "enter registry ip:"
+#read regip
+#sed -i "s/registryip/$regip/g" ./3_depend.yml
+#sed -i "s/registryip/$regip/g" ./6.1_addnode.yml
+
+
+#echo -n "enter registry name:"
+#read regname
+#regname="registry.gokul.com"
+#sed -i "s/registryname/$regname/g" ./3_depend.yml
+#sed -i "s/registryname/$regname/g" ./6.1_addnode.yml
+#ansible-playbook -i ./hosts ./3_depend.yml
+#ansible-playbook -i ./hosts ./4_join.yml
+#ansible-playbook -i ./hosts ./6_dashboard.yml
+
+
+
+
+echo "dashboard url :"
+echo "metrics url :"
+echo "log :"
+
+fi
+
+
+
+
+
+
